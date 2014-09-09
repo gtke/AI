@@ -1,15 +1,15 @@
 # search.py
 # ---------
-# Licensing Information:  You are free to use or extend these projects for 
-# educational purposes provided that (1) you do not distribute or publish 
-# solutions, (2) you retain this notice, and (3) you provide clear 
-# attribution to UC Berkeley, including a link to 
+# Licensing Information:  You are free to use or extend these projects for
+# educational purposes provided that (1) you do not distribute or publish
+# solutions, (2) you retain this notice, and (3) you provide clear
+# attribution to UC Berkeley, including a link to
 # http://inst.eecs.berkeley.edu/~cs188/pacman/pacman.html
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
-# The core projects and autograders were primarily created by John DeNero 
+# The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
-# Student side autograding was added by Brad Miller, Nick Hay, and 
+# Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
@@ -87,8 +87,26 @@ def depthFirstSearch(problem):
     print "Start:", problem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
+
     """
     "*** YOUR CODE HERE ***"
+
+    stack = util.Stack()
+    stack.push((problem.getStartState(), [], []))
+    while not stack.isEmpty():
+        node, actions, visited = stack.pop()
+        print "node: ", node
+        print "actions: ", actions
+        print "visited:", visited
+        for coord, direction, steps in problem.getSuccessors(node):
+            print "coord:", coord
+            print "direction:", direction
+            print "steps", steps
+            if not coord in visited:
+                if problem.isGoalState(coord):
+                    return actions + [direction]
+                stack.push((coord, actions + [direction], visited + [node]))
+    return []
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
@@ -96,6 +114,18 @@ def breadthFirstSearch(problem):
     Search the shallowest nodes in the search tree first.
     """
     "*** YOUR CODE HERE ***"
+    visited = []
+    queue = util.Queue()
+    queue.push((problem.getStartState(), []))
+    while not queue.isEmpty():
+        node, actions = queue.pop()
+        for coord, direction, steps in problem.getSuccessors(node):
+            if not coord in visited:
+                if problem.isGoalState(coord):
+                    return actions + [direction]
+                queue.push((coord, actions + [direction]))
+                visited.append(coord)
+    return []
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
