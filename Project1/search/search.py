@@ -122,6 +122,22 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
     "*** YOUR CODE HERE ***"
+    queue = util.PriorityQueue()
+    queue.push((problem.getStartState(), []), 0)
+    explored = []
+
+    while not queue.isEmpty():
+        node, actions = queue.pop()
+
+        if problem.isGoalState(node):
+            return actions
+        explored.append(node)
+
+        for coord, direction, steps in problem.getSuccessors(node):
+            if not coord in explored:
+                _actions = actions + [direction]
+                queue.push((coord, _actions), problem.getCostOfActions(_actions))
+    return []
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -134,6 +150,7 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
     "*** YOUR CODE HERE ***"
+    
     util.raiseNotDefined()
 
 
