@@ -286,15 +286,15 @@ class CornersProblem(search.SearchProblem):
         # in initializing the problem
         "*** YOUR CODE HERE ***"
 
+
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
-        "*** YOUR CODE HERE ***"
+        print "start:", self.startingPosition
         return (self.startingPosition, [])
         util.raiseNotDefined()
 
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
-        "*** YOUR CODE HERE ***"
         node = state[0]
         visited_corners = state[1]
         if node in self.corners:
@@ -332,8 +332,9 @@ class CornersProblem(search.SearchProblem):
                 if next_node in self.corners:
                     if not next_node in successor_visited_corners:
                         successor_visited_corners.append(next_node)
-                    successor = ((next_node, successor_visited_corners), action , 1)
-                    successors.append(successor)
+                cost = 1
+                successor = ((next_node, successor_visited_corners), action, cost)
+                successors.append(successor)
         self._expanded += 1
         return successors
 
