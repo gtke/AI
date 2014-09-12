@@ -296,11 +296,11 @@ class CornersProblem(search.SearchProblem):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
         node = state[0]
-        visitedCorners = state[1]
+        visited_corners = state[1]
         if node in self.corners:
-            if not node in visitedCorners:
-                visitedCorners.append(node)
-            return len(visitedCorners) == 4
+            if not node in visited_corners:
+                visited_corners.append(node)
+            return len(visited_corners) == 4
         return False
         util.raiseNotDefined()
 
@@ -315,18 +315,25 @@ class CornersProblem(search.SearchProblem):
          required to get there, and 'stepCost' is the incremental
          cost of expanding to that successor
         """
-
+        x,y = state[0]
+        visited_corners = state[1]
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
 
-            "*** YOUR CODE HERE ***"
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
 
+            if not hitsWall:
+                successor_visited_corners = list(visited_corners)
+                next_node = (nextx, nexty)
+                if next_node in self.corners:
+                    if not next_node in successor_visited_corners:
+                        successor_visited_corners.append(next_node)
+                    successor = ((next_node, successor_visited_corners), action , 1)
+                    successors.append(successor)
         self._expanded += 1
         return successors
 
@@ -402,7 +409,7 @@ class FoodSearchProblem:
             if not self.walls[nextx][nexty]:
                 nextFood = state[1].copy()
                 nextFood[nextx][nexty] = False
-                successors.append( ( ((nextx, nexty), nextFood), direction, 1) )
+                successors.append((((nextx, nexty), nextFood), direction, 1))
         return successors
 
     def getCostOfActions(self, actions):
