@@ -154,7 +154,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     while not queue.isEmpty():
         node, actions = queue.pop()
-
         if problem.isGoalState(node):
             return actions
         closed_set.append(node)
