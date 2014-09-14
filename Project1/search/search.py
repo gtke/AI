@@ -124,17 +124,17 @@ def uniformCostSearch(problem):
     "Search the node of least total cost first. "
     queue = util.PriorityQueue()
     queue.push((problem.getStartState(), []), 0)
-    explored = []
+    visited = []
 
     while not queue.isEmpty():
         node, actions = queue.pop()
-        if node not in explored:
+        if node not in visited:
             if problem.isGoalState(node):
                 return actions
-            explored.append(node)
+            visited.append(node)
 
             for coord, direction, steps in problem.getSuccessors(node):
-                if not coord in explored:
+                if not coord in visited:
                     _actions = actions + [direction]
                     queue.push((coord, _actions), problem.getCostOfActions(_actions))
     return []
@@ -149,19 +149,19 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
-    closed_set = []
+    visited = []
     queue = util.PriorityQueue()
     queue.push((problem.getStartState(), []), heuristic(problem.getStartState(), problem))
 
     while not queue.isEmpty():
         node, actions = queue.pop()
-        if node not in closed_set:
+        if node not in visited:
             if problem.isGoalState(node):
                 return actions
-            closed_set.append(node)
+            visited.append(node)
 
             for coord, direction, steps in problem.getSuccessors(node):
-                if coord not in closed_set:
+                if coord not in visited:
                     _actions = actions + [direction]
                     score = problem.getCostOfActions(_actions) + heuristic(coord, problem)
                     queue.push((coord, _actions), score)
