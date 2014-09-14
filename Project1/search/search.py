@@ -93,11 +93,11 @@ def depthFirstSearch(problem):
     stack.push((problem.getStartState(), [], []))
     while not stack.isEmpty():
         node, actions, visited = stack.pop()
+        if problem.isGoalState(node):
+            return actions
         for coord, direction, steps in problem.getSuccessors(node):
             if not coord in visited:
-                if problem.isGoalState(coord):
-                    return actions + [direction]
-                stack.push((coord, actions + [direction], visited + [node]))
+                stack.push((coord, list(actions) + [direction], visited + [node]))
     return []
     util.raiseNotDefined()
 
@@ -110,12 +110,13 @@ def breadthFirstSearch(problem):
     queue.push((problem.getStartState(), []))
     while not queue.isEmpty():
         node, actions = queue.pop()
-        for coord, direction, steps in problem.getSuccessors(node):
-            if not coord in visited:
-                if problem.isGoalState(coord):
-                    return actions + [direction]
-                queue.push((coord, actions + [direction]))
-                visited.append(coord)
+        if node not in visited:
+            visited.append(node)
+            if problem.isGoalState(node):
+                return actions
+            for coord, direction, steps in problem.getSuccessors(node):
+                if not coord in visited:
+                    queue.push((coord, actions + [direction]))
     return []
     util.raiseNotDefined()
 
@@ -127,15 +128,15 @@ def uniformCostSearch(problem):
 
     while not queue.isEmpty():
         node, actions = queue.pop()
+        if node not in explored:
+            if problem.isGoalState(node):
+                return actions
+            explored.append(node)
 
-        if problem.isGoalState(node):
-            return actions
-        explored.append(node)
-
-        for coord, direction, steps in problem.getSuccessors(node):
-            if not coord in explored:
-                _actions = actions + [direction]
-                queue.push((coord, _actions), problem.getCostOfActions(_actions))
+            for coord, direction, steps in problem.getSuccessors(node):
+                if not coord in explored:
+                    _actions = actions + [direction]
+                    queue.push((coord, _actions), problem.getCostOfActions(_actions))
     return []
     util.raiseNotDefined()
 
@@ -154,17 +155,19 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     while not queue.isEmpty():
         node, actions = queue.pop()
-        if problem.isGoalState(node):
-            return actions
-        closed_set.append(node)
+        if node not in closed_set:
+            if problem.isGoalState(node):
+                return actions
+            closed_set.append(node)
 
-        for coord, direction, steps in problem.getSuccessors(node):
-            if coord not in closed_set:
-                _actions = actions + [direction]
-                score = problem.getCostOfActions(_actions) + heuristic(coord, problem)
-                queue.push((coord, _actions), score)
+            for coord, direction, steps in problem.getSuccessors(node):
+                if coord not in closed_set:
+                    _actions = actions + [direction]
+                    score = problem.getCostOfActions(_actions) + heuristic(coord, problem)
+                    queue.push((coord, _actions), score)
     return []
     util.raiseNotDefined()
+
 
 
 # Abbreviations

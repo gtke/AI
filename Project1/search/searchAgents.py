@@ -362,6 +362,18 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
+#returns the index in food where the closest food is
+def findClosestCorner(cur, corners):
+    minDistIndex = -1
+    minDist = -1
+    for i in range(len(corners)):
+        dist = util.manhattanDistance(cur, corners[i])
+        if dist!= 0 and (minDist == -1 or minDist >= dist):
+            minDist = dist
+            minDistIndex = i
+    return minDistIndex
+
+
 def cornersHeuristic(state, problem):
     """
     A heuristic for the CornersProblem that you defined.
@@ -379,7 +391,21 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0
+    currentLocation = state[0] #pacman location
+
+    goals = [] # goals is a list of unvisited goals.
+    for i in range(len(problem.corners)):
+        if not state[1][i]: #state of [1][i] = False if the goal has not been visited
+            goals.append(problem.corners[i])
+
+    accumulator = 0
+    while len(goals) != 0:
+        j = findClosestCorner(currentLocation, goals)
+        accumulator += util.manhattanDistance(currentLocation, goals[j])
+        currentLocation = goals[j] #move the current location to goal [j]
+        goals.remove(goals[j]) # remove goal[j] from the list of unvisited goals
+
+    return accumulator
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
