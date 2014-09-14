@@ -99,7 +99,6 @@ def depthFirstSearch(problem):
             if not coord in visited:
                 stack.push((coord, list(actions) + [direction], visited + [node]))
     return []
-    util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """
@@ -118,7 +117,6 @@ def breadthFirstSearch(problem):
                 if not coord in visited:
                     queue.push((coord, actions + [direction]))
     return []
-    util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
@@ -138,7 +136,6 @@ def uniformCostSearch(problem):
                     _actions = actions + [direction]
                     queue.push((coord, _actions), problem.getCostOfActions(_actions))
     return []
-    util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
     """
@@ -166,7 +163,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                     score = problem.getCostOfActions(_actions) + heuristic(coord, problem)
                     queue.push((coord, _actions), score)
     return []
-    util.raiseNotDefined()
 
 
 
