@@ -285,23 +285,32 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.goal = self.corners
+        self._visited = {}
+        self._visitedList = []
+        _corners_visited = []
+        for i in range(len(self.corners)):
+            _corners_visited[i] = False
+        for corner in range(len(self.corners)):
+            if self.startingPosition == self.corners[corner]:
+                _corners_visited[corner]= True
+        path_cost = 0
+        self.startingState = (self.startingPosition, _corners_visited, path_cost)
 
 
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
-        print "start:", self.startingPosition
-        return (self.startingPosition, [])
+        return self.startingState
         util.raiseNotDefined()
 
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
-        node = state[0]
-        visited_corners = state[1]
-        if node in self.corners:
-            if not node in visited_corners:
-                visited_corners.append(node)
-            return len(visited_corners) == 4
-        return False
+
+        for i in range(len(self.corners)):
+            if state[0] == self.goal[0]:
+                state[1][i] = True
+        _is_goal_state = (state[1][0] and state[1][1] and state[1][2] and state[1][3])
+        return _is_goal_state
         util.raiseNotDefined()
 
     def getSuccessors(self, state):
@@ -459,7 +468,6 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-
     min_dist = 0
     for foodCord in foodGrid.asList():
        xy1 = foodCord
@@ -535,10 +543,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
         "*** YOUR CODE HERE ***"
         foodList = self.food.asList()
-
         distance, food = min([(util.manhattanDistance(state, food), food) for food in foodList])
 
-        # For display purposes only
         return state == food
         util.raiseNotDefined()
 
