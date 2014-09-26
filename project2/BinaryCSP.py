@@ -59,6 +59,7 @@ class BinaryConstraint:
 		self.var2 = var2
 
 	def isSatisfied(self, value1, value2):
+		# to be implemented
 		util.raiseNotDefined()
 
 	def affects(self, var):
