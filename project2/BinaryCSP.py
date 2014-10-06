@@ -189,11 +189,12 @@ class Assignment:
 		True if the value would be consistent with all currently assigned values, False otherwise
 """
 def consistent(assignment, csp, var, value):
-	"""Question 1"""
-	"""YOUR CODE HERE"""
-
+	for constraint in csp.binaryConstraints:
+		if constraint.affects(var):
+			if assignment.isAssigned(constraint.otherVariable(var)):
+				if not constraint.isSatisfied(value, assignment.assignedValues[constraint.otherVariable(var)]):
+					return False
 	return True
-
 
 """
 	Recursive backtracking algorithm.
