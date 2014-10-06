@@ -220,7 +220,17 @@ def consistent(assignment, csp, var, value):
 """
 def recursiveBacktracking(assignment, csp, orderValuesMethod, selectVariableMethod, inferenceMethod):
 	"""Question 1"""
-	"""YOUR CODE HERE"""
+
+	if assignment.isComplete(): return assignment
+	var = chooseFirstVariable(assignment, csp)
+	for value in orderValues(assignment, csp, var):
+		if consistent(assignment, csp, var, value):
+			assignment.assignedValues[var] = value
+			inferences = inferenceMethod(assignment, csp, var, value)
+			if inferences != None:
+				result = recursiveBacktracking(assignment, csp, orderValuesMethod, selectVariableMethod, inferenceMethod)
+				if result != None: return result
+		assignment.assignedValues[var] = None
 	return None
 
 
