@@ -374,9 +374,27 @@ def noInferences(assignment, csp, var, value):
 def forwardChecking(assignment, csp, var, value):
 	inferences = set([])
 	domains = assignment.varDomains
-	"""Question 4"""
-	"""YOUR CODE HERE"""
+	variables = domains.keys()
 
+	for constraint in csp.binaryConstraints:
+			if constraint.affects(var):
+				for other in domains[constraint.otherVariable(var)]:
+					if not constraint.isSatisfied(value, other):
+						inferences.add((constraint.otherVariable(var), other))
+				
+	for key in variables:
+		count = 0
+		for pair in inferences:
+			if key == pair[0]:
+				count += 1
+		if len(domains[key]) == count:
+			return None
+	
+	for key in  variables:
+		for pair in inferences:
+			if pair[0] == key:
+				domains[key].remove(pair[1])
+				
 	return inferences
 
 """
