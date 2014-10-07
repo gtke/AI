@@ -219,8 +219,6 @@ def consistent(assignment, csp, var, value):
 		A completed and consistent assignment. None if no solution exists.
 """
 def recursiveBacktracking(assignment, csp, orderValuesMethod, selectVariableMethod, inferenceMethod):
-	"""Question 1"""
-
 	if assignment.isComplete(): return assignment
 	var = chooseFirstVariable(assignment, csp)
 	for value in orderValues(assignment, csp, var):
@@ -297,10 +295,8 @@ def minimumRemainingValuesHeuristic(assignment, csp):
 					if key in degree_heuristics:
 						degree_heuristics[pair[0]] += 1
 	
-	degree_heuristics = sorted(degree_heuristics.items(), key=lambda degree: degree[1])
-
-	index = len(degree_heuristics) - 1;
-	nextVar = degree_heuristics[index][0]
+	degree_heuristics = sorted(degree_heuristics.items(), key=lambda degree: degree[1], reverse=True)
+	nextVar = degree_heuristics[0][0]
 	return nextVar
 
 """
