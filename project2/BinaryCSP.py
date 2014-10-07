@@ -279,11 +279,29 @@ def chooseFirstVariable(assignment, csp):
 def minimumRemainingValuesHeuristic(assignment, csp):
 	nextVar = None
 	domains = assignment.varDomains
-	"""Question 2"""
-	"""YOUR CODE HERE"""
+	values  = assignment.assignedValues
+	constraints = {}
+	degree_heuristics = {}
 
+	for var in values:
+		if values[var] == None:
+			constraints[var] = len(domains[var])
+	sorted_constraints = sorted(constraints.items(), key=lambda constraints: constraints[1])
+
+	for pair in sorted_constraints:
+		if pair[1] == sorted_constraints[0][1]:
+			degree_heuristics[pair[0]] = 0
+			for constraint in csp.binaryConstraints:	
+				if constraint.affects(pair[0]):
+					key = pair[0]
+					if key in degree_heuristics:
+						degree_heuristics[pair[0]] += 1
+	
+	degree_heuristics = sorted(degree_heuristics.items(), key=lambda degree: degree[1])
+
+	index = len(degree_heuristics) - 1;
+	nextVar = degree_heuristics[index][0]
 	return nextVar
-
 
 """
 	Trivial method for ordering values to assign.
