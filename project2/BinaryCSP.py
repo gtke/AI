@@ -325,7 +325,6 @@ def orderValues(assignment, csp, var):
 		a list of the possible values ordered by the least constraining value heuristic
 """
 def leastConstrainingValuesHeuristic(assignment, csp, var):
-	print "This is only printed twice"
 	values = list(assignment.varDomains[var])
 	constrained = list()
 	sortedList = list()
