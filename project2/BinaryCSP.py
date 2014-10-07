@@ -220,17 +220,21 @@ def consistent(assignment, csp, var, value):
 """
 def recursiveBacktracking(assignment, csp, orderValuesMethod, selectVariableMethod, inferenceMethod):
 	if assignment.isComplete(): return assignment
+	inferenceList = list()
 	var = chooseFirstVariable(assignment, csp)
 	for value in orderValues(assignment, csp, var):
 		if consistent(assignment, csp, var, value):
 			assignment.assignedValues[var] = value
 			inferences = inferenceMethod(assignment, csp, var, value)
 			if inferences != None:
+				inferenceList.append(inferences)
 				result = recursiveBacktracking(assignment, csp, orderValuesMethod, selectVariableMethod, inferenceMethod)
-				if result != None: return result
-		assignment.assignedValues[var] = None
+				if result != None and result.isComplete(): return result
+			for inference in inferenceList:
+				for pair in inference:
+					assignment.varDomains[pair[0]].add(pair[1])
+			assignment.assignedValues[var] = None
 	return None
-
 
 """
 	Uses unary constraints to eleminate values from an assignment.
@@ -321,15 +325,16 @@ def orderValues(assignment, csp, var):
 		a list of the possible values ordered by the least constraining value heuristic
 """
 def leastConstrainingValuesHeuristic(assignment, csp, var):
+	print "This is only printed twice"
 	values = list(assignment.varDomains[var])
 	constrained = list()
 	sortedList = list()
 	pairs = {}
+
 	for constraint in csp.binaryConstraints:
 		if constraint.affects(var):
 			constrained.append(constraint.otherVariable(var))
 
-    
 	for value in values:
 		count = 0
 		for v in constrained:
@@ -338,6 +343,7 @@ def leastConstrainingValuesHeuristic(assignment, csp, var):
 		pairs[value] = count
 
 	pairs = sorted(pairs.items(), key=lambda numOfConstraints:numOfConstraints[1])
+	
 	for pair in pairs: sortedList.append(pair[0])
 
 	return sortedList
@@ -372,7 +378,6 @@ def forwardChecking(assignment, csp, var, value):
 	"""YOUR CODE HERE"""
 
 	return inferences
-
 
 """
 	Helper funciton to maintainArcConsistency and AC3.
