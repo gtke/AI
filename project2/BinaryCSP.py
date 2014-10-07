@@ -284,7 +284,7 @@ def minimumRemainingValuesHeuristic(assignment, csp):
 	for var in values:
 		if values[var] == None:
 			constraints[var] = len(domains[var])
-	sorted_constraints = sorted(constraints.items(), key=lambda constraints: constraints[1])
+	sorted_constraints = sorted(constraints.items(), key=lambda constraints:constraints[1])
 
 	for pair in sorted_constraints:
 		if pair[1] == sorted_constraints[0][1]:
@@ -295,7 +295,7 @@ def minimumRemainingValuesHeuristic(assignment, csp):
 					if key in degree_heuristics:
 						degree_heuristics[pair[0]] += 1
 	
-	degree_heuristics = sorted(degree_heuristics.items(), key=lambda degree: degree[1], reverse=True)
+	degree_heuristics = sorted(degree_heuristics.items(), key=lambda degree:degree[1], reverse=True)
 	nextVar = degree_heuristics[0][0]
 	return nextVar
 
@@ -322,12 +322,25 @@ def orderValues(assignment, csp, var):
 """
 def leastConstrainingValuesHeuristic(assignment, csp, var):
 	values = list(assignment.varDomains[var])
-	"""Hint: Creating a helper function to count the number of constrained values might be useful"""
-	"""Question 3"""
-	"""YOUR CODE HERE"""
+	constrained = list()
+	sortedList = list()
+	pairs = {}
+	for constraint in csp.binaryConstraints:
+		if constraint.affects(var):
+			constrained.append(constraint.otherVariable(var))
 
-	return values
+    
+	for value in values:
+		count = 0
+		for v in constrained:
+			if value in assignment.varDomains[v]:
+				count += 1
+		pairs[value] = count
 
+	pairs = sorted(pairs.items(), key=lambda numOfConstraints:numOfConstraints[1])
+	for pair in pairs: sortedList.append(pair[0])
+
+	return sortedList
 
 """
 	Trivial method for making no inferences.
