@@ -222,7 +222,7 @@ def recursiveBacktracking(assignment, csp, orderValuesMethod, selectVariableMeth
 	if assignment.isComplete(): return assignment
 	inferenceList = list()
 	var = chooseFirstVariable(assignment, csp)
-	for value in orderValues(assignment, csp, var):
+	for value in orderValuesMethod(assignment, csp, var):
 		if consistent(assignment, csp, var, value):
 			assignment.assignedValues[var] = value
 			inferences = inferenceMethod(assignment, csp, var, value)
@@ -391,7 +391,7 @@ def forwardChecking(assignment, csp, var, value):
 	
 	for key in  variables:
 		for pair in inferences:
-			if pair[0] == key:
+			if key == pair[0]:
 				domains[key].remove(pair[1])
 				
 	return inferences
@@ -418,6 +418,9 @@ def revise(assignment, csp, var1, var2, constraint):
 	inferences = set([])
 	"""Question 5"""
 	"""YOUR CODE HERE"""
+
+
+
 
 	return inferences
 
