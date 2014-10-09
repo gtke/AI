@@ -1,0 +1,2 @@
+correct = ['1', '3', '9', '8', '2', '5', '4', '7', '6']
+success = result == correct

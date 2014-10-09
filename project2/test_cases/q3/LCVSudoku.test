@@ -1,0 +1,4 @@
+leastConstrainingValuesHeuristic
+assignment csps/sudoku1.assignment
+csp csps/sudoku.csp
+var jj

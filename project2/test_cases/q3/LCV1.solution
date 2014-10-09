@@ -1,0 +1,2 @@
+correct = ['B', 'R', 'G']
+success = result == correct

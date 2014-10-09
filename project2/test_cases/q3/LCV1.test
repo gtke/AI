@@ -1,0 +1,4 @@
+leastConstrainingValuesHeuristic
+assignment csps/csp7.assignment
+csp csps/csp7.csp
+var G
