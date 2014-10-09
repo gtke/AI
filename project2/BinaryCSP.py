@@ -415,12 +415,29 @@ def forwardChecking(assignment, csp, var, value):
 		the inferences made in this call or None if inconsistent assignment
 """
 def revise(assignment, csp, var1, var2, constraint):
-	inferences = set([])
-	"""Question 5"""
-	"""YOUR CODE HERE"""
+	inferences   = set([])
+	var1_domains = assignment.varDomains[var1]
+	var2_domains = assignment.varDomains[var2]
+	variables    = assignment.varDomains.keys()
 
+	for value1 in var1_domains:
+		flag = False
+		for value2 in var2_domains:
+			if constraint.isSatisfied(value1, value2):
+				flag = True
+		if flag is False:
+			inferences.add((var1, value1))
 
+	for var in variables:
+		count = 0
+		for item in inferences:
+			if var == item[0]:
+				count += 1
+			if len(assignment.varDomains[var]) == count:
+				return None
 
+	for pair in inferences:
+		temp = assignment.varDomains[pair[0]].remove(pair[1])
 
 	return inferences
 
