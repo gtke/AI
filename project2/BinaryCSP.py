@@ -464,7 +464,6 @@ def maintainArcConsistency(assignment, csp, var, value):
 	queue = Queue.Queue()
 	pair = ()
 
-	eliminateUnaryConstraints(assignment,csp)
 	for constraint in csp.binaryConstraints:
 		if constraint.affects(var) and not assignment.isAssigned(constraint.otherVariable(var)):
 			queue.put((constraint.otherVariable(var), var))
@@ -512,12 +511,46 @@ def maintainArcConsistency(assignment, csp, var, value):
 """
 def AC3(assignment, csp):
 	inferences = set([])
-	"""Hint: implement revise first and use it as a helper function"""
-	"""Question 6"""
-	"""YOUR CODE HERE"""
+	variables  = assignment.varDomains.keys()
+
+	import Queue
+	queue = Queue.Queue()
+	pair = ()
+
+	for var in variables:	
+		for constraint in csp.binaryConstraints:
+			if constraint.affects(var):
+				queue.put((constraint.otherVariable(var), var))
+
+	while not queue.empty():
+		pair = queue.get()
+		neighbors = list()
+		for constraint in csp.binaryConstraints:
+			variable1 = pair[0]
+			variable2 = pair[1]
+
+			if constraint.affects(variable1) and constraint.otherVariable(variable1) != variable2:
+				neighbors.append(constraint.otherVariable(variable1))
+		
+		for constraint in csp.binaryConstraints:
+			if constraint.affects(variable1) and variable2 == constraint.otherVariable(variable1):
+				size = len(assignment.varDomains[variable1])
+				inference = revise(assignment, csp, variable1, variable2, constraint)
+				if inference != None:
+					inferences = inferences.union(inference)
+				else: 
+					for item in inferences:
+						assignment.varDomains[item[0]].add(item[1])
+					return None
+
+				if size > len(assignment.varDomains[variable1]):			
+					if len(assignment.varDomains[variable1]) == 0:
+						return None
+					for neighbor in neighbors:
+						queue.put((neighbor, variable1))
 
 	return assignment
-
+	
 
 """
 	Solves a binary constraint satisfaction problem.
