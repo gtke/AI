@@ -145,7 +145,7 @@ class ExactInference(InferenceModule):
         emissionModel = busters.getObservationDistribution(noisyDistance)
         pacmanPosition = gameState.getPacmanPosition()
         allPossible = util.Counter()
-        
+
         for p in self.legalPositions:
             trueDistance = util.manhattanDistance(p, pacmanPosition)
             if emissionModel[trueDistance] > 0: allPossible[p] = emissionModel[trueDistance] * self.beliefs[p]
@@ -206,7 +206,14 @@ class ExactInference(InferenceModule):
         """
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        newParticles = []
+
+        for p in self.particles:
+            newPosDist = self.getPositionDistribution(self.setGhostPosition(gameState, pos))
+            newParticles.append(util.sampleFromCounter(newPosDist))
+
+        self.particles = newParticles
+      #  util.raiseNotDefined()
 
     def getBeliefDistribution(self):
         return self.beliefs
