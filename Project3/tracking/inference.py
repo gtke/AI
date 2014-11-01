@@ -204,16 +204,15 @@ class ExactInference(InferenceModule):
         It is worthwhile, however, to understand why these two helper methods are used and how they
         combine to give us a belief distribution over new positions after a time update from a particular position
         """
+        allPossible = util.Counter()
 
-        "*** YOUR CODE HERE ***"
-        newParticles = []
+        for p in self.legalPositions:
+            newPosDist = self.getPositionDistribution(self.setGhostPosition(gameState, p))
+            for newPos, prob in newPosDist.items():
+                allPossible[newPos] += prob * self.beliefs[p]
 
-        for p in self.particles:
-            newPosDist = self.getPositionDistribution(self.setGhostPosition(gameState, pos))
-            newParticles.append(util.sampleFromCounter(newPosDist))
-
-        self.particles = newParticles
-      #  util.raiseNotDefined()
+        allPossible.normalize()
+        self.beliefs = allPossible
 
     def getBeliefDistribution(self):
         return self.beliefs
