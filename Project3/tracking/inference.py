@@ -248,7 +248,6 @@ class ParticleFilter(InferenceModule):
             dictionary (where there could be an associated weight with each position) is incorrect
             and will produce errors
         """
-        "*** YOUR CODE HERE ***"
         self.particles = []
         for i in range(self.numParticles):
             j = i % len(self.legalPositions)
@@ -286,7 +285,6 @@ class ParticleFilter(InferenceModule):
         noisyDistance = observation
         emissionModel = busters.getObservationDistribution(noisyDistance)
         pacmanPosition = gameState.getPacmanPosition()
-        "*** YOUR CODE HERE ***"
         if noisyDistance == None:
             self.particles = []
             for i in range(self.numParticles):
@@ -323,7 +321,6 @@ class ParticleFilter(InferenceModule):
         util.sample(Counter object) is a helper method to generate a sample from a
         belief distribution
         """
-        "*** YOUR CODE HERE ***"
         newParticles = []
         for particle in self.particles:
             newPosDist = self.getPositionDistribution(self.setGhostPosition(gameState, particle))
@@ -336,7 +333,6 @@ class ParticleFilter(InferenceModule):
           ghost locations conditioned on all evidence and time passage. This method
           essentially converts a list of particles into a belief distribution (a Counter object)
         """
-        "*** YOUR CODE HERE ***"
 
         result = util.Counter()
         i = 1.0 / self.numParticles
@@ -406,7 +402,6 @@ class JointParticleFilter:
             and will produce errors
 
         """
-        "*** YOUR CODE HERE ***"
         possiblePositions = [x for x in itertools.product(*[self.legalPositions for i in range(self.numGhosts)])]
         random.shuffle(possiblePositions)
         self.particles = [possiblePositions[i % len(possiblePositions)] for i in range(self.numParticles)]
@@ -455,7 +450,6 @@ class JointParticleFilter:
         if len(noisyDistances) < self.numGhosts: return
         emissionModels = [busters.getObservationDistribution(dist) for dist in noisyDistances]
 
-        "*** YOUR CODE HERE ***"
         zero = True
         weights = util.Counter()
         for particle in self.particles:
@@ -527,16 +521,13 @@ class JointParticleFilter:
 
             # now loop through and update each entry in newParticle...
 
-            "*** YOUR CODE HERE ***"
             for i in range(self.numGhosts):
                 newPosDist = getPositionDistributionForGhost(setGhostPositions(gameState, oldParticle), i, self.ghostAgents[i])
                 newParticle[i] = util.sample(newPosDist)
-            "*** END YOUR CODE HERE ***"
             newParticles.append(tuple(newParticle))
         self.particles = newParticles
 
     def getBeliefDistribution(self):
-        "*** YOUR CODE HERE ***"
         result = util.Counter()
         i = 1.0 / self.numParticles
         for particle in self.particles:
