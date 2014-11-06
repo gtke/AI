@@ -1,0 +1,2 @@
+correct=sameListContents(result,[24, 45, 6],0.000010);
+[24, 45, 6]
