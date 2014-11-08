@@ -1,2 +1,2 @@
-correct=str(result)=="""9223372036854775807""";
-9223372036854775807
+correct=result>=2147483645;
+sys.maxint

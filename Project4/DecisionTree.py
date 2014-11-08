@@ -40,7 +40,7 @@ class Tree:
   def preorder(self,depth,node):
     if node is None:
       return '|---'*depth+str(None)+'\n'
-    if node.attr is None or node.value is not None :
+    if node.isleaf:
       return '|---'*depth+str(node.value)+'\n'
     string = ''
     for val in node.children.keys():
