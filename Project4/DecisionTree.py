@@ -176,11 +176,11 @@ def setEntropy(classCounts):
     """
     entropy = 0
     sumClassCounts = sum(classCounts)
-    
-    for value in classCounts:
-        entropy +=  (-1) * float(value)/sumClassCounts * log(float(value)/sumClassCounts, 2)
 
-    return entropy
+    for value in classCounts:
+        entropy += float(value)/sumClassCounts * log(float(value)/sumClassCounts, 2)
+
+    return (-1) * entropy
 
 def remainder(examples,attrName,attrValues,className):
     """
@@ -197,8 +197,13 @@ def remainder(examples,attrName,attrValues,className):
         float
         The remainder score of this value assignment of the attribute.
     """
-    #YOUR CODE HERE
-          
+    _remainder = 0.0
+
+    for count in getAttributeCounts(examples,attrName,attrValues,className):
+        _remainder += (float(sum(count))/len(examples)) * setEntropy(count)
+
+    return _remainder
+              
 def infoGain(examples,attrName,attrValues,className):
     """
     Calculates the info gain value for given attribute and set of examples.
@@ -214,8 +219,8 @@ def infoGain(examples,attrName,attrValues,className):
         float
         The gain score of this value assignment of the attribute.
     """
-    #YOUR CODE HERE
-  
+    #YOUR CODE HERE  
+    
 def giniIndex(classCounts):
     """
     Calculates the gini value for the given list of class counts.
