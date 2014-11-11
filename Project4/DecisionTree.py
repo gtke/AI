@@ -219,8 +219,8 @@ def infoGain(examples,attrName,attrValues,className):
         float
         The gain score of this value assignment of the attribute.
     """
-    #YOUR CODE HERE  
-    
+    return setEntropy(list(getClassCounts(examples, className).values())) - remainder(examples,attrName,attrValues,className)
+  
 def giniIndex(classCounts):
     """
     Calculates the gini value for the given list of class counts.
