@@ -116,7 +116,13 @@ def getClassCounts(examples,className):
         to its count.
     """
     classCounts = {}
-    #YOUR CODE HERE
+
+    for example in examples:
+        if example[className] in classCounts.keys():
+            classCounts[example[className]] += 1
+        else:
+            classCounts[example[className]] = 1
+
     return classCounts
 
 def getMostCommonClass(examples,className):
@@ -148,6 +154,9 @@ def getAttributeCounts(examples,attrName,attrValues,className):
         classes in each list is needed.
     """
     counts=[]
+
+
+
     #YOUR CODE HERE
     return counts
         
