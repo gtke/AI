@@ -174,8 +174,13 @@ def setEntropy(classCounts):
         float
         The set entropy score of this list of class value counts.
     """
-    #YOUR CODE HERE
-   
+    entropy = 0
+    sumClassCounts = sum(classCounts)
+    
+    for value in classCounts:
+        entropy +=  (-1) * float(value)/sumClassCounts * log(float(value)/sumClassCounts, 2)
+
+    return entropy
 
 def remainder(examples,attrName,attrValues,className):
     """
