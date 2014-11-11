@@ -232,8 +232,8 @@ def giniIndex(classCounts):
         float
         The gini score of this list of class value counts.
     """
-    #YOUR CODE HERE
-  
+    return 1 - sum([(float(value)/sum(classCounts))**2 for value in classCounts])
+      
 def giniGain(examples,attrName,attrValues,className):
     """
     Return the inverse of the giniD function described in the instructions.
