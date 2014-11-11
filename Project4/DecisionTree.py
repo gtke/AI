@@ -52,7 +52,7 @@ class Tree:
   def count(self,node=None):
     if node is None:
       node = self.root
-    if node.value is not None:
+    if node.isleaf:
       return 1
     count = 1
     for child in node.children.values():
@@ -91,7 +91,11 @@ def getPertinentExamples(examples,attrName,attrValue):
         The new list of examples.
     """
     newExamples = []
-    #YOUR CODE HERE
+    
+    for example in examples:
+        if example[attrName] == attrValue:
+            newExamples.append(example)
+
     return newExamples
   
 def getClassCounts(examples,className):
@@ -248,9 +252,9 @@ def makeTree(examples, attrValues,className,setScoreFunc,gainFunc):
         The classification tree for this set of examples
     """
     remainingAttributes=attrValues.keys()
-    return Tree(makeSubtrees(remainingAttributes,examples,attrValues,className,setScoreFunc,gainFunc))
+    return Tree(makeSubtrees(remainingAttributes,examples,attrValues,className,getMostCommonClass(examples,className),setScoreFunc,gainFunc))
     
-def makeSubtrees(remainingAttributes,examples,attributeValues,className,setScoreFunc,gainFunc):
+def makeSubtrees(remainingAttributes,examples,attributeValues,className,defaultLabel,setScoreFunc,gainFunc):
     """
     Creates a classification tree Node and all its children. This returns a Node, which is the root
     Node of the tree constructed from the passed in parameters. This should be implemented recursively,
@@ -261,6 +265,7 @@ def makeSubtrees(remainingAttributes,examples,attributeValues,className,setScore
         examples (list<dictionary<str,str>>): list of examples
         attrValues (dictionary<string,list<string>>): list of possible values for attribute
         className (str): the name of the class
+        defaultLabel (string): the default label
         setScoreFunc (func): the function to score classes (ie classEntropy or gini)
         gainFunc (func): the function to score gain of attributes (ie entropyGain or giniGain)
     Returns:
