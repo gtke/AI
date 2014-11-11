@@ -154,10 +154,7 @@ def getAttributeCounts(examples,attrName,attrValues,className):
         classes in each list is needed.
     """
     counts=[]
-
-
-
-    #YOUR CODE HERE
+    counts = [getClassCounts(getPertinentExamples(examples, attrName, value), className).values() for value in attrValues]
     return counts
         
 
