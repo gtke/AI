@@ -1,4 +1,5 @@
 from math import log
+import sys
 
 class Node:
   """
@@ -233,7 +234,7 @@ def giniIndex(classCounts):
         The gini score of this list of class value counts.
     """
     return 1 - sum([(float(value)/sum(classCounts))**2 for value in classCounts])
-      
+
 def giniGain(examples,attrName,attrValues,className):
     """
     Return the inverse of the giniD function described in the instructions.
@@ -250,8 +251,18 @@ def giniGain(examples,attrName,attrValues,className):
         float
         The summed gini index score of this list of class value counts.
     """
-    #YOUR CODE HERE
-    
+    _sum  = 0.0
+    score = 0.0
+    for count in getAttributeCounts(examples,attrName,attrValues,className):
+        _sum += giniIndex(count) * (float(sum(count))/len(examples))
+
+    if _sum == 0:
+        score = sys.maxint
+    else:
+        score = 1/_sum
+        
+    return score
+
 def makeTree(examples, attrValues,className,setScoreFunc,gainFunc):
     """
     Creates the classification tree for the given examples. Note that this is implemented - you
