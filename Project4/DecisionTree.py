@@ -74,7 +74,16 @@ class Tree:
         str
         The classification made with this tree.
     """
-    # to be implemented ...
+    node = self.root
+    if node.isleaf == True:
+        return node.value
+    else:
+        while node.isleaf == False:
+            node = node.children[classificationData[node.attr]]
+            if node == None:
+                return None
+        return node.value
+
 
   
 def getPertinentExamples(examples,attrName,attrValue):
