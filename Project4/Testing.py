@@ -103,3 +103,15 @@ def testCar(setFunc = setEntropy, infoFunc = infoGain):
     evaluation = getAverageClassificaionRate((examples,attrValues,labelName,labelValues))
     printDemarcation()
     return (tree,evaluation)
+
+
+def run_tests():
+    testDummySet1()
+    testDummySet2()
+    testCar()
+    testConnect4()
+
+
+
+
+run_tests()
