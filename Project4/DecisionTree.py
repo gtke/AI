@@ -74,7 +74,7 @@ class Tree:
         str
         The classification made with this tree.
     """
-    # to be implemented ... 
+    # to be implemented ...
 
   
 def getPertinentExamples(examples,attrName,attrValue):
@@ -323,7 +323,7 @@ def makeSubtrees(remainingAttributes,examples,attributeValues,className,defaultL
             defaultLabel = getMostCommonClass(examples,className)
             node.children[key] = makeSubtrees(remaining,getPertinentExamples(examples,attr,key),attributeValues,
                 className,defaultLabel,setScoreFunc,gainFunc)
-        return node
+    return node
 
 
 
