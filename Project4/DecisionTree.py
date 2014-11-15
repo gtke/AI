@@ -301,31 +301,29 @@ def makeSubtrees(remainingAttributes,examples,attributeValues,className,defaultL
         Node or LeafNode
         The classification tree node optimal for the remaining set of attributes.
     """
+    
     if len(examples) == 0:
         return LeafNode(defaultLabel)
     elif len(getClassCounts(examples, className)) == 1:
         return LeafNode(examples[0][className])
     elif len(remainingAttributes) == 0:
         return LeafNode(getMostCommonClass(examples, className))
-    else:
-        entropies = [(attr,gainFunc(examples,attr,attributeValues[attr],className)) for attr in remainingAttributes]
-        maxEntropy = 0
-        for attrSet in entropies:
-            if attrSet[1] > maxEntropy:
-                attr = attrSet[0]
-                maxEntropy = attrSet[1]
-        node = Node(attr)
+    else:     
+        maxEntropy = 0.0
+        attr = None
+        for attribute in remainingAttributes:
+             temp = gainFunc(examples,attribute,attributeValues[attribute],className)
+             if temp > maxEntropy:
+                 maxEntropy = temp
+                 attr = attribute
         remaining = list(remainingAttributes)
         remaining.remove(attr)
-        for attrValue in attributeValues[attr]:
-            node.children[attrValue] = makeSubtrees(remaining,getPertinentExamples(examples,attr,attrValue), 
-                attributeValues,defaultLabel,className,setScoreFunc,gainFunc) 
-    return node
-
-
-
-
-
+        node = Node(attr)
+        for key in attributeValues[attr]:
+            defaultLabel = getMostCommonClass(examples,className)
+            node.children[key] = makeSubtrees(remaining,getPertinentExamples(examples,attr,key),attributeValues,
+                className,defaultLabel,setScoreFunc,gainFunc)
+        return node
 
 
 
