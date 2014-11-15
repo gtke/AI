@@ -20,7 +20,7 @@ class LeafNode(Node):
     A basic extension of the Node class with just a value.
     
     value (str): Since this is a leaf node, a final value for the label.
-    islead (boolean): whether this is a leaf. True.
+    isleaf (boolean): whether this is a leaf. True.
     """
     def __init__(self,value):
         self.value = value
@@ -74,7 +74,8 @@ class Tree:
         str
         The classification made with this tree.
     """
-    #YOUR CODE HERE
+    # to be implemented ... 
+
   
 def getPertinentExamples(examples,attrName,attrValue):
     """
@@ -119,10 +120,11 @@ def getClassCounts(examples,className):
     classCounts = {}
 
     for example in examples:
-        if example[className] in classCounts.keys():
+        if className in example and example[className] != None:
+            classCounts[example[className]] = 0
+    for example in examples:
+        if className in example:
             classCounts[example[className]] += 1
-        else:
-            classCounts[example[className]] = 1
 
     return classCounts
 
@@ -299,4 +301,33 @@ def makeSubtrees(remainingAttributes,examples,attributeValues,className,defaultL
         Node or LeafNode
         The classification tree node optimal for the remaining set of attributes.
     """
-    #YOUR CODE HERE
+    if len(examples) == 0:
+        return LeafNode(defaultLabel)
+    elif len(getClassCounts(examples, className)) == 1:
+        return LeafNode(examples[0][className])
+    elif len(remainingAttributes) == 0:
+        return LeafNode(getMostCommonClass(examples, className))
+    else:
+        entropies = [(attr,gainFunc(examples,attr,attributeValues[attr],className)) for attr in remainingAttributes]
+        maxEntropy = 0
+        for attrSet in entropies:
+            if attrSet[1] > maxEntropy:
+                attr = attrSet[0]
+                maxEntropy = attrSet[1]
+        node = Node(attr)
+        remaining = list(remainingAttributes)
+        remaining.remove(attr)
+        for attrValue in attributeValues[attr]:
+            node.children[attrValue] = makeSubtrees(remaining,getPertinentExamples(examples,attr,attrValue), 
+                attributeValues,defaultLabel,className,setScoreFunc,gainFunc) 
+    return node
+
+
+
+
+
+
+
+
+
+
