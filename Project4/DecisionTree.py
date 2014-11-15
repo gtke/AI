@@ -79,9 +79,10 @@ class Tree:
         return node.value
     else:
         while node.isleaf == False:
-            node = node.children[classificationData[node.attr]]
-            if node == None:
-                return None
+            if node.attr != None:
+                node = node.children[classificationData[node.attr]]
+                if node == None:
+                    return None
         return node.value
 
 
@@ -326,12 +327,14 @@ def makeSubtrees(remainingAttributes,examples,attributeValues,className,defaultL
                  maxEntropy = temp
                  attr = attribute
         remaining = list(remainingAttributes)
-        remaining.remove(attr)
+        if attr in remaining:
+            remaining.remove(attr)
         node = Node(attr)
-        for key in attributeValues[attr]:
-            defaultLabel = getMostCommonClass(examples,className)
-            node.children[key] = makeSubtrees(remaining,getPertinentExamples(examples,attr,key),attributeValues,
-                className,defaultLabel,setScoreFunc,gainFunc)
+        if attr != None:
+            for key in attributeValues[attr]:
+                defaultLabel = getMostCommonClass(examples,className)
+                node.children[key] = makeSubtrees(remaining,getPertinentExamples(examples,attr,key),attributeValues,
+                    className,defaultLabel,setScoreFunc,gainFunc)
     return node
 
 
